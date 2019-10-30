@@ -1,6 +1,6 @@
 window.addEventListener('load', init);
 
-let timeAllowed = 80;
+let timeAllowed = 3;
 let time = timeAllowed;
 let score = 0;
 let isGameOver = false;
@@ -14,7 +14,6 @@ seconds = document.querySelector('.seconds');
 
 words = [
   "[]",
-  "{}+[]",
   "[]+[]",
   "1",
   "'1'",
@@ -27,7 +26,27 @@ words = [
   "1+1",
   "1/0",
   "true+true",
-  "{}"
+  "NaN",
+  "undefined",
+  "![] + []",
+  "null",
+  "[[]]",
+  "''",
+  "![]+ +[]",
+  "![] + []",
+  "'1'-'1'",
+  "String",
+  "'a'",
+  "'1'-'1'+'1'",
+  "'1' * 1",
+  "'one' * 1",
+  "+!+[]",
+  "'one'",
+  "'1',1",
+  "1,'1'",
+  "[1,1,1]",
+  "[][[]]",
+  "[1]"
 ];
 
 function init() {
