@@ -1,131 +1,77 @@
-window.addEventListener('load', init);
+const MAXTIME = 100;
+let time, score, gameOver, gameAnswer, gameQuestion;
+let gameTimer = null;
 
-let timeAllowed = 5;
-let time = timeAllowed;
-let score = 0;
-let isGameOver = false;
-let i1 = null, i2 = null;
+const gameInput = document.getElementById('gameInput');
+const displayMessage = document.getElementById('displayMessage');
+const gameScore = document.getElementById('gameScore');
+const gameTime = document.getElementById('gameTime');
+const statusMessage = document.getElementById('statusMessage');
+const startButton = document.getElementById('startButton');
 
-usrInput = document.querySelector('.usrInput');
-curr = document.querySelector('.curr');
-scoreShown = document.querySelector('.scoreShown');
-tmShown = document.querySelector('.tmShown');
-msg = document.querySelector('.msg');
-seconds = document.querySelector('.seconds');
-startButton = document.querySelector('.btn-start');
-
-function init() {
-  startButton.addEventListener('click', begin);
+function start() {
+	GameOver = false;
+	score = 0;
+	time = MAXTIME;
+	gameInput.value = "";
+	displayMessage.style.visibility = "visible";
+	startButton.style.visibility = "hidden";
+	statusMessage.style.visibility = "hidden";
+	gameInput.addEventListener('input', play);
+	gameInput.focus();
+	showWord(words);
+	gameTimer = setInterval(() => gameTime.innerHTML = Math.floor(--time / 20) + 1, 50);
 }
-
-function begin() {
-  usrInput.value = "";
-  usrInput.addEventListener('input', play);
-  msg.style.visibility = "hidden";
-  GameOver = false;
-  score = 0;
-  time = timeAllowed;
-  curr.style.visibility = "visible";
-  startButton.style.visibility = "hidden";
-  seconds.innerHTML = timeAllowed;
-  showWord(words);
-  i1 = setInterval(countdown, 1000);
-  if(i2 == null) i2 = setInterval(checkOver, 50);
-}
-
 
 function play() {
-  if(isCorrect()) {
-    isGameOver = false;
-    time = timeAllowed + 1;
-    showWord(words);
-    usrInput.value = '';
-    score++;
-  }
-  scoreShown.innerHTML = score;
+	if(isCorrect()) {
+		gameOver = false;
+		time = MAXTIME;
+		showWord(words);
+		gameInput.value = '';
+		score++;
+	}
+	gameScore.innerHTML = score;
 }
 
 function isCorrect() {
-  if(usrInput.value.toLowerCase() === String(typeof(eval(curr.innerHTML))).toLowerCase()) {
-    msg.innerHTML = "Right!"; 
-    msg.style.visibility = "visible";
-    return true;
-  } else {
-    msg.style.visibility = "hidden";
-    return false;
-  }
+	let correct = gameInput.value.toLowerCase() === gameAnswer.toLowerCase();
+	statusMessage.innerHTML = correct ? "Right!" : statusMessage.innerHTML;
+	statusMessage.style.visibility = correct ? "visible" : "hidden";
+	return correct;
 }
 
 function showWord(words) {
-  rIdx = Math.floor(Math.random() * words.length);
-  while(curr.innerHTML == words[rIdx]) {
-    rIdx = Math.floor(Math.random() * words.length);
-  }
-  curr.innerHTML = words[rIdx];
-}
-
-function countdown() {
-  if (time > 0) {
-    time--;
-  } else if (time === 0) {
-    isGameOver = true;
-  }
-  tmShown.innerHTML = time;
+	do gameQuestion = words[Math.floor(Math.random() * words.length)];
+	while (displayMessage.innerHTML == gameQuestion);
+	gameAnswer = String(typeof(eval(gameQuestion)));
+	displayMessage.innerHTML = gameQuestion;
 }
 
 function checkOver() {
-  if (isGameOver && time === 0) {
-    msg.innerHTML = "Game Over";
-    msg.style.visibility = "visible";
-
-    startButton.innerHTML = "Play Again?";
-    startButton.style.visibility = "visible";
-    curr.style.visibility = "hidden";
-    usrInput.removeEventListener('input', play);
-    clearInterval(i1);
-  }
+	if (time < -5) {
+		gameInput.removeEventListener('input', play);
+		statusMessage.innerHTML = "Game Over";
+		statusMessage.style.visibility = "visible";
+		startButton.innerHTML = "Play Again?";
+		startButton.style.visibility = "visible";
+		let isVowel = /[aeiou]/.test(gameAnswer[0]);
+		displayMessage.innerHTML = gameQuestion + ` is a${isVowel?'n':''} ` + gameAnswer;
+		clearInterval(gameTimer);
+	}
 }
 
-words = [
-  "[]",
-  "[]+[]",
-  "1",
-  "'1'",
-  "1+'1'",
-  "'1'-1",
-  "[]+{}",
-  "![]",
-  "'1+1'",
-  "false",
-  "1+1",
-  "1/0",
-  "true+true",
-  "NaN",
-  "undefined",
-  "![] + []",
-  "null",
-  "[[]]",
-  "''",
-  "![]+ +[]",
-  "![] + []",
-  "'1'-'1'",
-  "String",
-  "'a'",
-  "'1'-'1'+'1'",
-  "'1' * 1",
-  "'one' * 1",
-  "+!+[]",
-  "'one'",
-  "'1',1",
-  "1,'1'",
-  "[1,1,1]",
-  "[][[]]",
-  "[1]",
-  "[1]+[1]",
-  "['a']*['b']",
-  "Number",
-  "'1'+'1'%'1'",
-  "'1'%'1'"
+setInterval(checkOver, 50);
+
+const words = [
+	"[]", "[]+[]", "1", "'1'",
+	"1+'1'", "'1'-1", "[]+{}", "![]",
+	"'1+1'", "false", "1+1", "1/0",
+	"true+true", "NaN", "undefined", "![] + []",
+	"null", "[[]]", "''", "![]+ +[]",
+	"![] + []", "'1'-'1'", "String", "'a'",
+	"'1'-'1'+'1'", "'1' * 1", "'one' * 1", "+!+[]",
+	"'one'", "'1',1", "1,'1'", "[1,1,1]",
+	"[][[]]", "[1]", "[1]+[1]", "['a']*['b']",
+	"Number", "'1'+'1'%'1'", "'1'%'1'",
 ];
-
-

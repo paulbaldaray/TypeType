@@ -1,11 +1,29 @@
-.curr {
-  visibility: hidden;
+body {
+	background-color: #343A40;
+	color: #EEE;
+	font-family: sans-serif;
 }
 
-.msg {
-  visibility: hidden;
+button {
+	background-color: #4A535B;
+	border-color: #333;
+}
+button:hover {
+	background-color: #5B646C;
 }
 
-.btn-start {
-  font-size: 1.5rem;
+#displayMessage {
+	visibility: hidden;
+}
+
+#statusMessage {
+	visibility: hidden;
+}
+
+.bottom-bar {
+	margin-left: -3.6vw;
+}
+
+.bottom-element {
+	margin: 0 2%;
 }
