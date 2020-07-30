@@ -7,12 +7,14 @@ body {
 
 #gameInput {
 	font-size: 3.5vmin;
+	padding: .5vmin 1vmin;
 }
 
 button {
 	background-color: #4A535B;
 	border: .3vmin solid #333;
 	font-size: 4vmin;
+	padding: 0 1vmin;
 }
 
 button:hover {
@@ -28,7 +30,7 @@ button:hover {
 }
 
 .bottom-bar {
-	margin-left: -5vw;
+	margin-left: -10vmin;
 }
 
 .bottom-element {
